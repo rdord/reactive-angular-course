@@ -17,13 +17,13 @@ export class CoursesCardListComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  editCourse(course: Course) {
+  editCourse(courseData: Course) {
     const dialogConfig = new MatDialogConfig();
 
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.width = '400px';
-    dialogConfig.data = course;
+    dialogConfig.data = courseData;
 
     const dialogRef = this.dialog.open(CourseDialogComponent, dialogConfig);
   }

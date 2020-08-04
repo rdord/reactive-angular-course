@@ -15,20 +15,20 @@ export class CourseDialogComponent implements AfterViewInit {
 
     editCourseForm: FormGroup;
 
-    course:Course;
+    course: Course;
 
     constructor(
         private fb: FormBuilder,
         private dialogRef: MatDialogRef<CourseDialogComponent>,
-        @Inject(MAT_DIALOG_DATA) course:Course) {
+        @Inject(MAT_DIALOG_DATA) courseData: Course) {
 
-        this.course = course;
+        this.course = courseData;
 
         this.editCourseForm = fb.group({
-            description: [course.description, Validators.required],
-            category: [course.category, Validators.required],
+            description: [this.course.description, Validators.required],
+            category: [this.course.category, Validators.required],
             releasedAt: [moment(), Validators.required],
-            longDescription: [course.longDescription,Validators.required]
+            longDescription: [this.course.longDescription, Validators.required]
         });
 
     }
