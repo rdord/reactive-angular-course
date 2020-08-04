@@ -13,7 +13,7 @@ import {throwError} from 'rxjs';
 })
 export class CourseDialogComponent implements AfterViewInit {
 
-    form: FormGroup;
+    editCourseForm: FormGroup;
 
     course:Course;
 
@@ -24,7 +24,7 @@ export class CourseDialogComponent implements AfterViewInit {
 
         this.course = course;
 
-        this.form = fb.group({
+        this.editCourseForm = fb.group({
             description: [course.description, Validators.required],
             category: [course.category, Validators.required],
             releasedAt: [moment(), Validators.required],
@@ -39,7 +39,7 @@ export class CourseDialogComponent implements AfterViewInit {
 
     save() {
 
-      const changes = this.form.value;
+      const changes = this.editCourseForm.value;
 
     }
 
