@@ -3,6 +3,7 @@ import {Course, sortCoursesBySeqNo} from '../model/course';
 import {interval, noop, Observable, of, throwError, timer} from 'rxjs';
 import {catchError, delay, delayWhen, filter, finalize, map, retryWhen, shareReplay, tap} from 'rxjs/operators';
 import {CoursesService} from '../services/courses.service';
+import {LoadingService} from '../loading/loading.service';
 
 
 @Component({
@@ -14,7 +15,7 @@ export class HomeComponent implements OnInit {
   beginnerCourses$: Observable<Course[]>;
   advancedCourses$: Observable<Course[]>;
 
-  constructor(private coursesService: CoursesService) {}
+  constructor(private coursesService: CoursesService, private loadingService: LoadingService) {}
 
   ngOnInit() {
     this.reloadData();
