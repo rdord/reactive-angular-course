@@ -1,3 +1,4 @@
+import { MessagesService } from '../messages/messages.service';
 import { AfterViewInit, Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Course } from '../model/course';
@@ -23,7 +24,8 @@ export class CourseDialogComponent implements AfterViewInit {
     private dialogRef: MatDialogRef<CourseDialogComponent>,
     @Inject(MAT_DIALOG_DATA) courseData: Course,
     private coursesService: CoursesService,
-    private loadingService: LoadingService
+    private loadingService: LoadingService,
+    private messagesService: MessagesService
   ) {
     this.course = courseData;
 
@@ -40,7 +42,16 @@ export class CourseDialogComponent implements AfterViewInit {
   save() {
     const updatedCourse = this.editCourseForm.value;
 
-    const saveCourse$ = this.coursesService.updateCourse(`${this.course.id}`, updatedCourse);
+    const saveCourse$ = this.coursesService.updateCourse(`${this.course.id}`, updatedCourse).pipe(
+      catchError(err => {
+        const message = 'Could not save course';
+        console.log(message, err);
+        this.messagesService.showErrors(message);
+        return throwError(err);
+      })
+    );
+
+    console.log('saveCourse', saveCourse$);
 
     this.loadingService.showLoaderUntilCompleted(saveCourse$).subscribe(res => {
       this.dialogRef.close(res);
