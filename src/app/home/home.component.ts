@@ -1,4 +1,4 @@
-import { MessagesService } from './../messages/messages.service';
+import { MessagesService } from '../messages/messages.service';
 import { Component, OnInit } from '@angular/core';
 import { Course, sortCoursesBySeqNo } from '../model/course';
 import { interval, noop, Observable, of, throwError, timer } from 'rxjs';
@@ -27,15 +27,13 @@ export class HomeComponent implements OnInit {
 
   reloadData() {
     const courses$ = this.coursesService.loadAllCourses().pipe(
-      map(
-        courses => courses.sort(sortCoursesBySeqNo),
-        catchError(err => {
-          const message = 'Could not load courses';
-          this.messagesService.showErrors(message);
-          console.log(message, err);
-          return throwError(err);
-        })
-      )
+      map(courses => courses.sort(sortCoursesBySeqNo)),
+      catchError(err => {
+        const message = 'Could not load courses';
+        this.messagesService.showErrors(message);
+        console.log(message, err);
+        return throwError(err);
+      })
     );
 
     const loadCourses$ = this.loadingService.showLoaderUntilCompleted(courses$);

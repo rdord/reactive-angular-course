@@ -75,7 +75,7 @@ import { MessagesService } from './messages/messages.service';
     MatMomentDateModule,
     ReactiveFormsModule
   ],
-  providers: [LoadingService],
+  providers: [LoadingService, MessagesService],
   bootstrap: [AppComponent],
   entryComponents: [CourseDialogComponent]
 })
