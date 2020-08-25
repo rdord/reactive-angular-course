@@ -1,3 +1,4 @@
+import { CoursesStore } from './../services/courses.store';
 import { MessagesService } from '../messages/messages.service';
 import { AfterViewInit, Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -6,7 +7,6 @@ import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import * as moment from 'moment';
 import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
-import { CoursesService } from '../services/courses.service';
 import { LoadingService } from '../loading/loading.service';
 
 @Component({
@@ -23,7 +23,7 @@ export class CourseDialogComponent implements AfterViewInit {
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<CourseDialogComponent>,
     @Inject(MAT_DIALOG_DATA) courseData: Course,
-    private coursesService: CoursesService,
+    private coursesStore: CoursesStore,
     private loadingService: LoadingService,
     private messagesService: MessagesService
   ) {
@@ -40,22 +40,10 @@ export class CourseDialogComponent implements AfterViewInit {
   ngAfterViewInit() {}
 
   save() {
-    const updatedCourse = this.editCourseForm.value;
+    const changes = this.editCourseForm.value;
 
-    const saveCourse$ = this.coursesService.updateCourse(`${this.course.id}`, updatedCourse).pipe(
-      catchError(err => {
-        const message = 'Could not save course';
-        console.log(message, err);
-        this.messagesService.showErrors(message);
-        return throwError(err);
-      })
-    );
-
-    console.log('saveCourse', saveCourse$);
-
-    this.loadingService.showLoaderUntilCompleted(saveCourse$).subscribe(res => {
-      this.dialogRef.close(res);
-    });
+    this.coursesStore.saveCourse(`${this.course.id}`, changes).subscribe();
+    this.dialogRef.close(changes);
   }
 
   close() {
