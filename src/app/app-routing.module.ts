@@ -22,7 +22,7 @@ const routes: Routes = [
   },
   {
     path: 'courses/:courseId',
-    component: CourseComponent
+    component:  CourseComponent
   },
   {
     path: 'login',
